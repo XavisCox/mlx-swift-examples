@@ -264,10 +264,14 @@ public class Qwen3MoEModel: Module, LLMModel, KVCacheDimensionProvider {
             let prefix = "model.layers.\(l)"
             for n in ["up_proj", "down_proj", "gate_proj"] {
                 if sanitizedWeights["\(prefix).mlp.experts.0.\(n).weight"] != nil {
-                    let toJoin = (0 ..< configuration.numExperts).map { e in
-                        sanitizedWeights.removeValue(
-                            forKey: "\(prefix).mlp.experts.\(e).\(n).weight")!
-                    }
+                   var toJoin: [MLXArray] = []  
+                      
+                    for e in 0..<configuration.args.numExperts {  
+                        if let weight = sanitizedWeights.removeValue(forKey: "\(prefix).mlp.experts.\(e).\(n).weight") {  
+                            toJoin.append(weight)  
+                        }  
+                    }  
+                  
                     sanitizedWeights["\(prefix).mlp.switch_mlp.\(n).weight"] = MLX.stacked(toJoin)
                 }
             }
