@@ -266,7 +266,7 @@ public class Qwen3MoEModel: Module, LLMModel, KVCacheDimensionProvider {
                 if sanitizedWeights["\(prefix).mlp.experts.0.\(n).weight"] != nil {
                    var toJoin: [MLXArray] = []  
                       
-                    for e in 0..<configuration.args.numExperts {  
+                    for e in 0..<configuration.numExperts {  
                         if let weight = sanitizedWeights.removeValue(forKey: "\(prefix).mlp.experts.\(e).\(n).weight") {  
                             toJoin.append(weight)  
                         }  
