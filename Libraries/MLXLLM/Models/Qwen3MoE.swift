@@ -59,8 +59,8 @@ private class Attention: Module {
         }
 
         self.rope = RoPE(
-            dimensions: headDim, traditional: false, base: args.ropeTheta,
-            scale: ropeScale)
+            dimensions: headDim, traditional: false, base: args.ropeTheta
+            )
     }
 
     public func callAsFunction(
